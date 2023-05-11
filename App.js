@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useState } from "react";
 
 export default function App() {
@@ -9,29 +9,32 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{ color: "#b3b3b3" }}>Hello world</Text>
-      <Button
-        onPress={onPressButton}
-        title={showText ? "Hide" : "Show"}
-        color="#841584"
-        accessibilityLabel="Learn more about this purple button"
-      />
-      {showText && (
-        <Text style={{ color: "#b3b3b3", marginTop: 20, fontWeight: "bold" }}>
-          Visible
-        </Text>
-      )}
+    <View style={styles.appContainer}>
+      <View style={styles.flexContainer}>
+        <TextInput style={styles.inputGroup} placeholder="Yout course goals" />
+        <Button style={{ borderRadius: 8 }} title="Add goals" />
+      </View>
+      <View>
+        <Text>List of goals...</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#2a2a2a",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#b3b3b3",
+  appContainer: {
+    padding: 50,
+  },
+  inputGroup: {
+    borderWidth: 1,
+    borderColor: "#555",
+    padding: 8,
+    borderRadius: 8,
+    width: "80%",
+    marginRight: 8,
+  },
+  flexContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
