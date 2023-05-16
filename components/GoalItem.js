@@ -16,7 +16,7 @@ const GoalItem = ({ item, deleteGoalHandler }) => {
           ({ pressed }) => pressed && styles.pressedItem)
         }
         onPress={onPressItem}
-        android_ripple={{ color: "##20b234" }}
+        android_ripple={{ color: "#20b234" }}
       >
         <Text style={styles.goalText}>{item?.["text"]}</Text>
         {showDeleteBtn && (
@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
   goalItem: {
     margin: 8,
     borderRadius: 4,
-    backgroundColor: "#20b2aa",
-    color: "white",
+    backgroundColor: "#E8F6EF",
+    color: "#4C4C6D",
     // width: "100%",
   },
   goalText: {
-    color: "white",
+    color: "#4C4C6D",
     paddingVertical: 10,
     paddingHorizontal: 5,
     flex: 10,
