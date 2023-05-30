@@ -4,6 +4,8 @@ import Title from "../components/ui/Title";
 
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 
 let minBoundrey = 1;
 let maxBoundrey = 100;
@@ -55,20 +57,26 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
     <View style={styles.screen}>
       <Title>Opponent's guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>Higher or Lower ?</Text>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={() => nextGuessHandler("lower")}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={() => nextGuessHandler("greater")}>
-            +
-          </PrimaryButton>
+      <Card>
+        <InstructionText style={styles.instructionText}>
+          Higher or Lower ?
+        </InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={() => nextGuessHandler("lower")}>
+              -
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={() => nextGuessHandler("greater")}>
+              +
+            </PrimaryButton>
+          </View>
         </View>
-        <View>
+        {/* <View>
           <Text>LOG ROUNDS</Text>
-        </View>
-      </View>
+        </View> */}
+      </Card>
     </View>
   );
 };
@@ -81,7 +89,12 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   buttonContainer: {
-    justifyContent: "center",
+    flex: 1,
+  },
+  buttonsContainer: {
     flexDirection: "row",
+  },
+  instructionText: {
+    marginBottom: 12,
   },
 });
