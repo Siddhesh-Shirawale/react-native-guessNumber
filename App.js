@@ -5,6 +5,8 @@ import { useState } from "react";
 import GameScreen from "./screens/GameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 import colors from "./components/constants/colors";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState(null);
@@ -19,6 +21,15 @@ export default function App() {
     setUserNumber(null);
     setGameIsOver(false);
   };
+
+  const [fontsLoaded] = useFonts({
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+  });
+
+  if (fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
     <LinearGradient
       colors={[colors.primary700, colors.accent500]}
