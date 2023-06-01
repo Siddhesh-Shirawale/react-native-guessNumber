@@ -7,6 +7,8 @@ import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
+import { FlatList } from "react-native-web";
+import { FlatListComponent } from "react-native";
 
 let minBoundrey = 1;
 let maxBoundrey = 100;
@@ -21,9 +23,10 @@ const generateRandomNum = (min, max, exclude) => {
   }
 };
 
-const GameScreen = ({ userNumber, gameOverHandler }) => {
+const GameScreen = ({ userNumber, gameOverHandler, increaseRounds }) => {
   const initialGuess = generateRandomNum(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   const nextGuessHandler = (direction) => {
     if (
@@ -33,11 +36,14 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
       Alert.alert("Dont lie", "You know that this is wrong", [
         { text: "Sorry", style: "cancel" },
       ]);
+      increaseRounds();
       return;
     } else if (direction === "lower") {
       maxBoundrey = currentGuess;
+      increaseRounds();
     } else {
       minBoundrey = currentGuess + 1;
+      increaseRounds();
     }
     const newRndmNumber = generateRandomNum(
       minBoundrey,
@@ -46,6 +52,7 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
     );
 
     setCurrentGuess(newRndmNumber);
+    setGuessRounds((prev) => [newRndmNumber, ...prev]);
   };
 
   useEffect(() => {
@@ -53,6 +60,11 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
       gameOverHandler();
     }
   }, [currentGuess, userNumber, gameOverHandler]);
+
+  useEffect(() => {
+    minBoundrey = 1;
+    maxBoundrey = 100;
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -74,10 +86,17 @@ const GameScreen = ({ userNumber, gameOverHandler }) => {
             </PrimaryButton>
           </View>
         </View>
-        {/* <View>
-          <Text>LOG ROUNDS</Text>
-        </View> */}
       </Card>
+      <View>
+        {/* {guessRounds?.map((guessRound) => (
+          <Text key={guessRound}>{guessRound}</Text>
+        ))} */}
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => <Text>{itemData?.item}</Text>}
+          keyExtractor={(item) => item}
+        />
+      </View>
     </View>
   );
 };

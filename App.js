@@ -1,39 +1,56 @@
 import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import GameScreen from "./screens/GameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 import colors from "./components/constants/colors";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [userNumber, setUserNumber] = useState(null);
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [rounds, setRounds] = useState(0);
   const pickedNumberHandler = (pickedNo) => {
     setUserNumber(pickedNo);
   };
   const gameOverHandler = () => {
     setGameIsOver(true);
   };
+
   const restartGame = () => {
     setUserNumber(null);
     setGameIsOver(false);
+    setRounds(0);
+  };
+
+  const addRound = () => {
+    const newRound = rounds + 1;
+    setRounds(newRound);
   };
 
   const [fontsLoaded] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
-  if (fontsLoaded) {
-    return <AppLoading />;
+  if (!fontsLoaded) {
+    return null;
   }
+
   return (
     <LinearGradient
       colors={[colors.primary700, colors.accent500]}
       style={styles.rootScreen}
+      onLayout={onLayoutRootView}
     >
       <ImageBackground
         source={require("./assets/background.png")}
@@ -43,11 +60,16 @@ export default function App() {
       >
         <SafeAreaView style={styles.safeArea}>
           {gameIsOver && userNumber ? (
-            <GameOverScreen restartGame={restartGame} />
+            <GameOverScreen
+              roundsNumber={rounds}
+              userNumber={userNumber}
+              restartGame={restartGame}
+            />
           ) : userNumber ? (
             <GameScreen
               userNumber={userNumber}
               gameOverHandler={gameOverHandler}
+              increaseRounds={addRound}
             />
           ) : (
             <StartGameScreen onPickNumber={pickedNumberHandler} />

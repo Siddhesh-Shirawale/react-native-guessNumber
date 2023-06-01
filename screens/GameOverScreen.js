@@ -1,29 +1,55 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import colors from "../components/constants/colors";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from "../components/ui/Title";
 
-const GameOver = ({ restartGame }) => {
+const GameOver = ({ roundsNumber, userNumber, restartGame }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.textMessage}>Game over</Text>
-      <PrimaryButton onPress={restartGame}>Restart</PrimaryButton>
+    <View style={styles.rootContainer}>
+      <Title>GAME OVER!</Title>
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={require("../assets/success.png")} />
+      </View>
+      <View>
+        <Text style={styles.summaryText}>
+          Your phone needed <Text style={styles.highlight}>{userNumber}</Text>{" "}
+          rounds to guess number{" "}
+          <Text style={styles.highlight}>{roundsNumber}</Text>
+        </Text>
+        <PrimaryButton onPress={restartGame}>Restart</PrimaryButton>
+      </View>
     </View>
   );
 };
 
 export default GameOver;
 const styles = StyleSheet.create({
-  container: {
+  imageContainer: {
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    borderWidth: 3,
+    borderColor: colors.primary800,
+    overflow: "hidden",
+    margin: 36,
+  },
+  image: { width: "100%", height: "100%" },
+  rootContainer: {
     flex: 1,
     padding: 24,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
   },
-  textMessage: {
-    color: colors.primary800,
-    fontSize: 42,
-    fontWeight: "bold",
+  summaryText: {
+    fontFamily: "open-sans",
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: 24,
+  },
+  highlight: {
+    fontFamily: "open-sans-bold",
+    color: colors.primary500,
   },
 });
