@@ -7,8 +7,9 @@ import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
-import { FlatList } from "react-native-web";
-import { FlatListComponent } from "react-native";
+
+import { FlatList } from "react-native";
+import GuessLog from "../components/game/GuessLog";
 
 let minBoundrey = 1;
 let maxBoundrey = 100;
@@ -66,6 +67,8 @@ const GameScreen = ({ userNumber, gameOverHandler, increaseRounds }) => {
     maxBoundrey = 100;
   }, []);
 
+  const guessRoundListLength = guessRounds.length;
+
   return (
     <View style={styles.screen}>
       <Title>Opponent's guess</Title>
@@ -87,13 +90,18 @@ const GameScreen = ({ userNumber, gameOverHandler, increaseRounds }) => {
           </View>
         </View>
       </Card>
-      <View>
+      <View style={styles.listContainer}>
         {/* {guessRounds?.map((guessRound) => (
           <Text key={guessRound}>{guessRound}</Text>
         ))} */}
         <FlatList
           data={guessRounds}
-          renderItem={(itemData) => <Text>{itemData?.item}</Text>}
+          renderItem={(itemData) => (
+            <GuessLog
+              roundNumber={guessRoundListLength - itemData.index}
+              guess={itemData.item}
+            />
+          )}
           keyExtractor={(item) => item}
         />
       </View>
@@ -116,5 +124,9 @@ const styles = StyleSheet.create({
   },
   instructionText: {
     marginBottom: 12,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16,
   },
 });

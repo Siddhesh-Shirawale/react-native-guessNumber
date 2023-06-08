@@ -13,9 +13,9 @@ const GameOver = ({ roundsNumber, userNumber, restartGame }) => {
       </View>
       <View>
         <Text style={styles.summaryText}>
-          Your phone needed <Text style={styles.highlight}>{userNumber}</Text>{" "}
+          Your phone needed <Text style={styles.highlight}>{roundsNumber}</Text>{" "}
           rounds to guess number{" "}
-          <Text style={styles.highlight}>{roundsNumber}</Text>
+          <Text style={styles.highlight}>{userNumber}</Text>
         </Text>
         <PrimaryButton onPress={restartGame}>Restart</PrimaryButton>
       </View>
