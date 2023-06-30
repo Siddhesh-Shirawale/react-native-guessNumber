@@ -7,6 +7,7 @@ import GameOverScreen from "./screens/GameOverScreen";
 import colors from "./components/constants/colors";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -47,36 +48,39 @@ export default function App() {
   }
 
   return (
-    <LinearGradient
-      colors={[colors.primary700, colors.accent500]}
-      style={styles.rootScreen}
-      onLayout={onLayoutRootView}
-    >
-      <ImageBackground
-        source={require("./assets/background.png")}
-        resizeMode="cover"
+    <>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[colors.primary700, colors.accent500]}
         style={styles.rootScreen}
-        imageStyle={styles.backgroundImage}
+        onLayout={onLayoutRootView}
       >
-        <SafeAreaView style={styles.safeArea}>
-          {gameIsOver && userNumber ? (
-            <GameOverScreen
-              roundsNumber={rounds}
-              userNumber={userNumber}
-              restartGame={restartGame}
-            />
-          ) : userNumber ? (
-            <GameScreen
-              userNumber={userNumber}
-              gameOverHandler={gameOverHandler}
-              increaseRounds={addRound}
-            />
-          ) : (
-            <StartGameScreen onPickNumber={pickedNumberHandler} />
-          )}
-        </SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/background.png")}
+          resizeMode="cover"
+          style={styles.rootScreen}
+          imageStyle={styles.backgroundImage}
+        >
+          <SafeAreaView style={styles.safeArea}>
+            {gameIsOver && userNumber ? (
+              <GameOverScreen
+                roundsNumber={rounds}
+                userNumber={userNumber}
+                restartGame={restartGame}
+              />
+            ) : userNumber ? (
+              <GameScreen
+                userNumber={userNumber}
+                gameOverHandler={gameOverHandler}
+                increaseRounds={addRound}
+              />
+            ) : (
+              <StartGameScreen onPickNumber={pickedNumberHandler} />
+            )}
+          </SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
